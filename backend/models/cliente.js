@@ -1,5 +1,3 @@
-"use strict";
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -14,6 +12,7 @@ const ClienteSchema = Schema({
     genero: {type: String, required: false},
     f_nacimiento: {type:String, required: false},
     dni: {type: String, required: false},
+    createdAt: {type: Date, default: Date.now, required: true}
  })
 
 module.exports = mongoose.model('cliente',ClienteSchema)

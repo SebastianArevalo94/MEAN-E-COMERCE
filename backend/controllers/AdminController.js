@@ -4,9 +4,8 @@ const jwt = require('../helpers/jwt')
 
 const registro_admin = async function (req, res) {
   const data = req.body;
-  let adminDB = [];
-  adminDB = await Admin.find({ email: data.email });
-  if (adminDB.length == 0) {
+  let adminDB =  await Admin.findOne({ email: data.email });
+  if (adminDB) {
     if (data.password) {
       bcrypt.hash(data.password, 10, async function (err, hash) {
         data.password = hash;
@@ -23,16 +22,14 @@ const registro_admin = async function (req, res) {
 
 const login_admin = async function (req, res) {
   const data = req.body;
-  let adminDB = [];
-  adminDB = await Admin.find({ email: data.email });
-  if (adminDB.length!=0) {
+  let adminDB = await Admin.findOne({ email: data.email });
+  if (adminDB) {
     //Login
-    let admin = adminDB[0];
-    bcrypt.compare(data.password, admin.password, async function (error, check) {
+    bcrypt.compare(data.password, adminDB.password, async function (error, check) {
       if (check) {
-        res.status(200).send({ message: "Admin logged !", token:jwt.createToken(admin)});
+        res.status(200).send({ message: `Bienvenido ${adminDB.nombres} ${adminDB.apellidos}`, token:jwt.createToken(adminDB),data:adminDB});
       } else {
-        res.status(400).send({ message: "Incorrect Password !" });
+        res.status(400).send({ message: "Incorrect Password !"});
       }
     });
   } else {

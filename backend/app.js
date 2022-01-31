@@ -1,4 +1,3 @@
-"use strict";
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -8,7 +7,8 @@ const mongoose = require("mongoose");
 const port = process.env.PORT || 4201;
 
 const cliente_route = require("./routes/cliente");
-const admin_route = require("./routes/admin")
+const admin_route = require("./routes/admin");
+const producto_route = require("./routes/producto")
 
 mongoose.connect(
   "mongodb://127.0.0.1:27017/tienda",
@@ -27,7 +27,8 @@ mongoose.connect(
 app.use(bodyparser.urlencoded({ limit: "50mb", extended: true }));
 app.use(bodyparser.json({ limit: "50mb" }));
 
-app.use("/api",cliente_route);
-app.use("/api",admin_route);
+app.use("/api", cliente_route);
+app.use("/api", admin_route);
+app.use("/api", producto_route);
 
 module.exports = app;
